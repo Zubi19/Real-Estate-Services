@@ -1,0 +1,427 @@
+﻿
+@{
+    Layout = null;
+}
+
+@using FYP2.Models;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real Estate Services</title>
+
+    <!-- PLUGINS CSS STYLE -->
+    <link href="@Url.Content("~/Content/")plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="@Url.Content("~/Content/")plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="@Url.Content("~/Content/")plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link href="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+    <!-- Fancy Box -->
+    <link href="@Url.Content("~/Content/")plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/")plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/")plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+    <!-- CUSTOM CSS -->
+    <link href="@Url.Content("~/Content/")css/style.css" rel="stylesheet">
+    <!-- FAVICON -->
+    <link href="@Url.Content("~/Content/")img/favicon.png" rel="shortcut icon">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        #message {
+    display:none;
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+#message p {
+    padding: 10px 35px;
+    font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -35px;
+    content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -35px;
+    content: "✖";
+}
+
+    </style>
+</head>
+<body class="body-wrapper">
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-expand-lg  navigation">
+                        <a class="navbar-brand" href="@Url.Action("Home", "Home")">
+                            @*<img src="images/logo.png" alt="">*@
+                            <img src="~/Content/images/Untitled.png" />
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto main-nav ">
+                                <li class="nav-item ">
+                                    <a href='@Url.Action("Home", "Home")' class="nav-link">Home</a>
+                                    @*<a class="nav-link" >@Html.ActionLink("Home", "Home", "Home")</a>*@
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    <a href='@Url.Action("ShowAgent", "ShowAgent")' class="nav-link">Find Agent</a>
+
+                                    @*@{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("ShowAgent", "ShowAgent")' class="nav-link">Find Agent</a>
+                                        }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">FindAgent</a>
+                                        }
+                                    }*@
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("ShowAgent", "AgentRank")' class="nav-link">Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "ShowAgentRank", "AgentRank", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("RecommendAgent", "RecommendAgent")' class="nav-link">Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "RecommendAgent", "RecommendAgent", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("History", "History")' class="nav-link">History</a>
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">History</a>
+
+                                    }
+                                    }
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ml-auto mt-10">
+                                <li class="nav-item">
+                                    @if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("Logout", "Home")' class="nav-link add-button">Log Out</a>
+
+                                        @*@Html.ActionLink("Log Out", "Logout", "Home",new {@class="nav-link login-button"});*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link add-button">Login</a>
+
+                                        @*@Html.ActionLink("Log In", "Login", "Login", new { @class = "nav-link login-button" });*@
+                                    }
+                                </li>
+                                @*<li class="nav-item">
+                <a class="nav-link add-button" href="#"><i class="fa fa-plus-circle"></i> Add Listing</a>
+            </li>*@
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==================================
+    =            User Profile            =
+    ===================================-->
+    <section class="user-profile section">
+        <div class="container">
+            <div class="row">
+              
+                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+                    <!-- Edit Personal Info -->
+                    <div class="widget personal-info">
+                        <h3 class="widget-header user">User Registration</h3>
+                        <form action="/User/Register" method="post">
+                            <!-- First Name -->
+                            <div class="form-group">
+                                <label for="first-name">Name</label>
+                                <input type="text" class="form-control" id="first-name" name="name" required>
+                            </div>
+                            <!-- Last Name -->
+                            <div class="form-group">
+                                <label for="last-name">Email</label>
+                                <input type="email" class="form-control" id="last-name" name="email" required>
+                            </div>
+                            <!-- File chooser -->
+                            <!-- Comunity Name -->
+                            <div class="form-group">
+                                <label for="comunity-name">Phone No.</label>
+                                <input type="tel" class="form-control" id="comunity-name" name="contact" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="comunity-name">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" onkeyup='check();' required>
+                            </div>
+                            <div id="message">
+                                <h3>Password must contain the following:</h3>
+                                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                <p id="number" class="invalid">A <b>number</b></p>
+                                <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="comunity-name">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmpassword" name="cpassword" onkeyup='check();' required>
+                            </div>
+                            @*<span id='message'></span>*@
+                            @*<div id="cpmessage" style="display:none">
+                                <p id="notmatched"> Password does not match</p>*@
+                                <p id="matched"></p>
+                                  
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-transparent" onclick=" return Validate();">Register</button>
+                        </form>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--============================
+    =            Footer            =
+    =============================-->
+   
+    <!-- Footer Bottom -->
+    <footer class="footer-bottom">
+        <script type="text/javascript">
+            var myInput = document.getElementById("password");
+            var letter = document.getElementById("letter");
+            var capital = document.getElementById("capital");
+            var number = document.getElementById("number");
+            var length = document.getElementById("length");
+            var check1 = false
+            var check2=false
+
+            // When the user clicks on the password field, show the message box
+            myInput.onfocus = function () {
+                document.getElementById("message").style.display = "block";
+            }
+
+            // When the user clicks outside of the password field, hide the message box
+            myInput.onblur = function () {
+                document.getElementById("message").style.display = "none";
+            }
+
+            // When the user starts to type something inside the password field
+            myInput.onkeyup = function () {
+                // Validate lowercase letters
+                var lowerCaseLetters = /[a-z]/g;
+                if (myInput.value.match(lowerCaseLetters)) {
+                    letter.classList.remove("invalid");
+                    letter.classList.add("valid");
+                    check1 = true;
+                } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                    check1 = false;
+                }
+
+                // Validate capital letters
+                var upperCaseLetters = /[A-Z]/g;
+                if (myInput.value.match(upperCaseLetters)) {
+                    capital.classList.remove("invalid");
+                    capital.classList.add("valid");
+                    check1 = true;
+                }
+
+                else {
+                    capital.classList.remove("valid");
+                    capital.classList.add("invalid");
+                    check1 = false;
+                }
+
+                // Validate numbers
+                var numbers = /[0-9]/g;
+                if (myInput.value.match(numbers)) {
+                    number.classList.remove("invalid");
+                    number.classList.add("valid");
+                    check1 = true;
+                }
+                else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                    check1 = false;
+                }
+
+                // Validate length
+                if (myInput.value.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                    check1 = true;
+                }
+                else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                    check1 = false;
+                }
+
+                if (document.getElementById('password').value ==
+             document.getElementById('confirmpassword').value) {
+                    document.getElementById('matched').style.color = 'green';
+                    document.getElementById('matched').innerHTML = 'Password matched';
+                    check2 = true;
+                }
+                else {
+                    document.getElementById('matched').style.color = 'red';
+                    document.getElementById('matched').innerHTML = 'Password does not match';
+                    check2 = false;
+                }
+            }
+    
+       
+        //var password = document.getElementById("password").value;
+        //var confirmPassword = document.getElementById("confirmpassword");
+        
+
+        // When the user clicks outside of the password field, hide the message box
+        //confirmpassword.onblur = function () {
+        //    document.getElementById("cpmessage").style.display = "none";
+        //}
+        //var nomatch = document.getElementById("nomatch");
+        //var match = document.getElementById("match");
+        //confirmPassword.onkeyup = function () {
+
+        //    let p = document.getElementById("password");
+        //    let cp = document.getElementById("confirmpassword");
+
+            
+        //        if (p == cp) {
+        //            document.getElementById("cpmessage").style.display = "none";
+        //        }
+        //         else {
+        //            document.getElementById("cpmessage").style.display = "block";
+        //        }
+                
+        //    }
+            function Validate() {
+                if (check1==true &&check2==true)
+                {
+                    return true;
+                }
+                else {
+                    alert("Enter correct password")
+                    return false;
+                }
+            }
+
+        var check = function () {
+            if (document.getElementById('password').value ==
+              document.getElementById('confirmpassword').value) {
+                document.getElementById('matched').style.color = 'green';
+                document.getElementById('matched').innerHTML = 'Password matched';
+                check2 = true;
+            } else {
+                document.getElementById('matched').style.color = 'red';
+                document.getElementById('matched').innerHTML = 'Password does not match';
+                check2 = false;
+            }
+        }
+        
+        
+       
+        
+    
+        </script>
+
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                    <!-- Copyright -->
+                    <div class="copyright">
+                        <p>Developed by Zubair Arif and Haris Ahsan</p>
+                    </div>
+                </div>
+                @*<div class="col-sm-6 col-12">
+                    <!-- Social Icons -->
+                    <ul class="social-media-icons text-right">
+                        <li><a class="fa fa-facebook" href=""></a></li>
+                        <li><a class="fa fa-twitter" href=""></a></li>
+                        <li><a class="fa fa-pinterest-p" href=""></a></li>
+                        <li><a class="fa fa-vimeo" href=""></a></li>
+                    </ul>
+                </div>*@
+            </div>
+        </div>
+        <!-- Container End -->
+        <!-- To Top -->
+        <div class="top-to">
+            <a id="top" class="" href=""><i class="fa fa-angle-up"></i></a>
+        </div>
+    </footer>
+    <!-- JAVASCRIPTS -->
+    <script src="@Url.Content("~/Content/")plugins/jquery/jquery.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/tether/js/tether.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/raty/jquery.raty-fa.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/bootstrap/dist/js/popper.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script src="@Url.Content("~/Content/")js/scripts.js"></script>
+</body>
+</html>

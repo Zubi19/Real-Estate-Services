@@ -1,0 +1,649 @@
+﻿@{
+    Layout = null;
+}
+
+@using FYP2.Models;
+@using System.Collections.Generic;
+
+@using System.Data;
+@model IEnumerable<FYP2.Models.ShowAgentVariables>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real Estate Services</title>
+
+    <!-- PLUGINS CSS STYLE -->
+    <link href="@Url.Content("~/Content/")plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="@Url.Content("~/Content/")plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="@Url.Content("~/Content/")plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link href="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+    <!-- Fancy Box -->
+    <link href="@Url.Content("~/Content/")plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+    @*<link href="@Url.Content("~/Content/")plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">*@
+    <link href="@Url.Content("~/Content/")plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+    <!-- CUSTOM CSS -->
+    <link href="@Url.Content("~/Content/")css/style.css" rel="stylesheet">
+    <!-- FAVICON -->
+    <link href="img/favicon.png" rel="shortcut icon">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    @*<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"
+        rel="stylesheet" type="text/css" />*@
+    @*<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>*@
+    @*<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+        rel="stylesheet" type="text/css" />*@
+    @*<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+        type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Scripts/")multiselect.js"
+            type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/")multiselect.css"
+          rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/twitterbootstrap3.0.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $('#areas').change(function () {
+                $('#blocks option').remove();
+
+                $.getJSON('/AgentAreaController/GetBlocks', { AreaID: $('#areas').val() }, function (data) {
+
+
+                    $.each(data, function () {
+                        $('#blocks').append('<option value=' +
+                         this + '>' + this + '</option>');
+                    });
+
+
+                    $("#blocks").multiselect('destroy');
+                    $('#blocks').multiselect({
+                        includeSelectAllOption: true
+                    });
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert('Error getting products!');
+                });
+            });
+        });
+        $("#agents tr").click(function () {
+            window.document.location = "http://www.yourwebsiteurl.com/newpage.html";
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#blocks').multiselect({
+                includeSelectAllOption: true
+            });
+
+        });
+    </script>
+
+
+
+</head>
+<body class="body-wrapper">
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-expand-lg  navigation">
+                        <a class="navbar-brand" href="@Url.Action("Home", "Home")">
+                            @*<img src="images/logo.png" alt="">*@
+                            <img src="~/Content/images/Untitled.png" />
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto main-nav ">
+                                <li class="nav-item ">
+                                    <a href='@Url.Action("Home", "Home")' class="nav-link">Home</a>
+                                    @*<a class="nav-link" >@Html.ActionLink("Home", "Home", "Home")</a>*@
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    <a href='@Url.Action("ShowAgent", "ShowAgent")' class="nav-link">Find Agent</a>
+
+                                    @*@{if (LoginModel.id != 0)
+                                        {
+                                            <a href='@Url.Action("ShowAgent", "ShowAgent")' class="nav-link">Find Agent</a>
+                                           }
+                                        else
+                                        {
+                                            <a href='@Url.Action("Login", "Login")' class="nav-link">FindAgent</a>
+                                           }
+                                        }*@
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("ShowAgentRank", "AgentRank")' class="nav-link">Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "ShowAgentRank", "AgentRank", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li><a class="nav-link">      </a> </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("RecommendAgent", "RecommendAgent")' class="nav-link">Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "RecommendAgent", "RecommendAgent", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li class="nav-item">
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("History", "History")' class="nav-link">History</a>
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link">History</a>
+
+                                    }
+                                    }
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ml-auto mt-10">
+                                <li class="nav-item">
+                                    @if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("Logout", "Home")' class="nav-link add-button">Log Out</a>
+
+                                        @*@Html.ActionLink("Log Out", "Logout", "Home",new {@class="nav-link login-button"});*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")' class="nav-link add-button">Login</a>
+
+                                        @*@Html.ActionLink("Log In", "Login", "Login", new { @class = "nav-link login-button" });*@
+                                    }
+                                </li>
+                                @*<li class="nav-item">
+                                        <a class="nav-link add-button" href="#"><i class="fa fa-plus-circle"></i> Add Listing</a>
+                                    </li>*@
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==================================
+    =            User Profile            =
+    ===================================-->
+    @*<section class="page-search">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Advance Search -->
+                        <div class="advance-search">
+                            <form action="/ShowAgent/ShowAgent" method="post">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <select class="btn btn-default" name="selectarea" id="areas">
+
+                                            {
+                                            <option selected disabled>Select Area</option>}
+
+                                            @for (int i = 0; i < AgentArea.TableAea().Rows.Count; i++)
+                                            {
+                                                <option value="@AgentArea.TableAea().Rows[i][0].ToString()">@AgentArea.TableAea().Rows[i][1].ToString()</option>
+                                                var area = AgentArea.TableAea().Rows[i][1].ToString();
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select class="btn btn-default" hidden multiple name="selectblock" id="blocks" style="visibility:hidden"></select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select class="btn btn-default" name="selecttype" id="dropdowncolor">
+
+
+                                            <option selected disabled>Select Type</option>
+                                            <option>Property</option>
+                                            <option>Contractor</option>
+                                            <option>Other</option>
+
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+
+                                        <button type="submit" class="btn btn-primary">Search Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+
+
+
+
+    <section class="dashboard section">
+        <!-- Container Start -->
+        <div class="container">
+            <!-- Row Start -->
+            <div class="row">
+                <div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
+                    <div class="sidebar">
+                        <!-- User Widget -->
+                        <!-- Dashboard Links -->
+                        <div class="widget user-dashboard-menu">
+                            <ul>
+                                <li class="active"><a href='@Url.Action("Home", "Home")'>Home</a></li>
+                                <li>
+                                    <a href='@Url.Action("ShowAgent", "ShowAgent")' class="nav-link">Find Agent</a>
+                                </li>
+                                <li>
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("ShowAgentRank", "AgentRank")'>Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "ShowAgentRank", "AgentRank", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")'>Agent Rank</a>
+
+                                        @*@Html.ActionLink("Agent Rank", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li>
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("RecommendAgent", "RecommendAgent")'>Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "RecommendAgent", "RecommendAgent", new { @class = "nav-link " })*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")'>Recommended Agent</a>
+
+                                        @*@Html.ActionLink("Recommended Agents", "Login", "Login", new { @class = "nav-link " });*@
+                                    }
+                                    }
+                                </li>
+                                <li>
+                                    @{if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("History", "History")'>History</a>
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")'>History</a>
+
+                                    }
+                                    }
+                                </li>
+                                <li>
+                                    @if (LoginModel.id != 0)
+                                    {
+                                        <a href='@Url.Action("Logout", "Home")'>Log Out</a>
+
+                                        @*@Html.ActionLink("Log Out", "Logout", "Home",new {@class="nav-link login-button"});*@
+                                    }
+                                    else
+                                    {
+                                        <a href='@Url.Action("Login", "Login")'>Login</a>
+
+                                        @*@Html.ActionLink("Log In", "Login", "Login", new { @class = "nav-link login-button" });*@
+                                    }
+                                </li>
+                                @*<li><a href=""><i class="fa fa-power-off"></i>Delete Account</a></li>*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+                    <!-- Recently Favorited -->
+                    @if (Model != null)
+                    {
+
+                        <div class="widget dashboard-container my-adslist">
+                            <h3 class="widget-header">Agents List</h3>
+                            <table class="table table-responsive product-dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Info</th>
+                                        <th class="text-center">Details</th>
+                                        <th>Reviews</th>
+                                        @*<th class="text-center">Action</th>*@
+                                    </tr>
+                                </thead>
+                                @{var imgSrc = "";
+                                  string coma = ",";
+                                  int i = 0;
+                                  int prerankid = 0;
+                                  int j = 0;
+                                  string prevtype = "";
+                                  int k = 0;
+                                var items = new List<KeyValuePair<String, String>>();
+                                var types = new List<KeyValuePair<string, String>>();
+                                var area = new List<KeyValuePair<string, String>>();
+                                System.Collections.ArrayList ids = new System.Collections.ArrayList();
+                                string prev = string.Empty;
+                                foreach (var item in Model)
+                                {
+
+                                    items.Add(new KeyValuePair<string, String>(item.Name, item.block));
+
+
+
+                                }
+                                foreach (var item in Model)
+                                {
+
+                                    area.Add(new KeyValuePair<string, String>(Convert.ToString(item.Id), item.area));
+
+
+
+                                }
+                                foreach (var item in Model)
+                                {
+
+                                    types.Add(new KeyValuePair<string, String>(Convert.ToString(item.Id), item.type));
+
+
+
+                                }
+                                System.Collections.ArrayList ty = new System.Collections.ArrayList();
+                                System.Collections.ArrayList ar = new System.Collections.ArrayList();
+                                var lookup = items.ToLookup(kvp => kvp.Key, kvp => kvp.Value);
+                                var lookuptype = types.ToLookup(kvp => kvp.Key, kvp => kvp.Value);
+                                var lookuparea = area.ToLookup(kvp => kvp.Key, kvp => kvp.Value);
+                                foreach (var item in Model)
+                                {
+
+
+                                    if (prev != item.Name && !ids.Contains(item.Id))
+                                    {
+                                        ids.Add(item.Id);
+                                        string agentname = Convert.ToString(@Html.DisplayFor(modelItem => item.Name));
+                                        string b = Convert.ToString(@Html.DisplayFor(modelItem => item.Id));
+                                        string c = Convert.ToString(@Html.DisplayFor(modelItem => item.ContactNo));
+                                        string d = Convert.ToString(@Html.DisplayFor(modelItem => item.Description));
+                                        //string area = Convert.ToString(@Html.DisplayFor(modelItem => item.area));
+                                        if (item.Data != null)
+                                        {
+                                            var base64 = Convert.ToBase64String(item.Data);
+                                            imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+                                        <tbody>
+                                            <tr>
+
+                                                <td class="product-thumb">
+                                                    <img width="80px" height="auto" src="@imgSrc" alt="image description">
+                                                </td>
+                                                <td class="product-details">
+                                                    <h3 class="title">@agentname</h3>
+                                                    <span class="add-id"><strong>Area:</strong> @foreach (string x in lookuparea[Convert.ToString(item.Id)])
+                                                    {
+                                                        if (item.area != null && (prevtype != x || prerankid != item.Id))
+                                                        {
+                                                            if (prerankid != item.Id)
+                                                            { j = 0; }
+                                                            if (j != 3)
+                                                            {
+                                                                j++;
+                                                                ar.Add(x);
+
+
+                                                                if (i == 0)
+                                                                { }
+                                                                else if (!(prerankid != item.Id))
+                                                                {
+                                                                    @Html.Raw(coma)
+                                                    <br />
+                                        <time>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;</time>}
+
+                                                            <time>@Html.Raw(x)</time>
+                                                            }
+                                                        }
+
+                                                        i++;
+                                                        prerankid = item.Id;
+                                                        prevtype = x;
+                                                    }</span>
+                                                    <span class="location">
+                                                        @*<strong>Block:</strong>*@@foreach (string x in lookup[item.Name])
+                                                        {
+                                                            if (item.block != null)
+                                                            {
+                                                                <time>@Html.Raw(x),</time>
+                                                            }
+                                                        }
+                                                    </span>
+                                                    <span class="location">
+                                                        @{prerankid = 0;
+                                                        j = 0;}
+                                                        <strong>Type</strong>
+
+                                                        @foreach (string x in lookuptype[Convert.ToString(item.Id)])
+                                                        {
+                                                            if (item.type != null && (prevtype != x || prerankid != item.Id))
+                                                            {
+                                                                if (prerankid != item.Id)
+                                                                { j = 0; }
+                                                                if (j != 3)
+                                                                {
+                                                                    j++;
+
+                                                                    ty.Add(x);
+                                                                    if (k == 0)
+                                                                    { }
+                                                                    else if (!(prerankid != item.Id))
+                                                                    {@Html.Raw(coma)
+                                                          if(j==3)
+                                                { 
+                                            <br />
+                                        <time>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;</time>}}
+                                                                    <time>@Html.Raw(x)</time>
+                                                                }
+                                                            }
+
+                                                            k++;
+                                                            prerankid = item.Id;
+                                                            prevtype = x;
+                                                        }
+
+                                                    </span>
+
+                                                    <span class="status active"><strong>Mobile No.</strong>@c</span>
+                                                    @*<span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>*@
+                                                </td>
+                                                <td class="product-category"><span class="categories"><a href='@Url.Action("AgentDetails", "ShowAgent", new { AgentID = item.Id })'>Detail</a></span></td>
+                                                <td class="product-category"><span class="categories"><a href='@Url.Action("HistoryDetails", "History", new { AgentID = item.Id })'>Review</a></span></td>
+                
+                                @*<td class="action" data-title="Action">
+                                                        <div class="">
+                                                            <ul class="list-inline justify-content-center">
+                                                                <li class="list-inline-item">
+                                                                    <a data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="view" href="">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <a class="edit" href="">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <a class="delete" href="">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>*@
+                                            </tr>
+
+                                           
+                                        </tbody>
+                                    
+                                                        prev = item.Name;
+                                    }
+                                }
+                                }
+
+                            </table>
+
+
+                        </div>
+                    }
+                </div>
+
+
+            </div>
+            <!-- Row End -->
+        </div>
+        <!-- Container End -->
+    </section>
+    <!--============================
+    =            Footer            =
+    =============================-->
+    @*<footer class="footer section section-sm">
+            <!-- Container Start -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-7 offset-md-1 offset-lg-0">
+                        <!-- About -->
+                        <div class="block about">
+                            <!-- footer logo -->
+                            <img src="images/logo-footer.png" alt="">
+                            <!-- description -->
+                            <p class="alt-color">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                    </div>
+                    <!-- Link list -->
+                    <div class="col-lg-2 offset-lg-1 col-md-3">
+                        <div class="block">
+                            <h4>Site Pages</h4>
+                            <ul>
+                                <li><a href="#">Boston</a></li>
+                                <li><a href="#">How It works</a></li>
+                                <li><a href="#">Deals & Coupons</a></li>
+                                <li><a href="#">Articls & Tips</a></li>
+                                <li><a href="#">Terms of Services</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Link list -->
+                    <div class="col-lg-2 col-md-3 offset-md-1 offset-lg-0">
+                        <div class="block">
+                            <h4>Admin Pages</h4>
+                            <ul>
+                                <li><a href="#">Boston</a></li>
+                                <li><a href="#">How It works</a></li>
+                                <li><a href="#">Deals & Coupons</a></li>
+                                <li><a href="#">Articls & Tips</a></li>
+                                <li><a href="#">Terms of Services</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Promotion -->
+                    <div class="col-lg-4 col-md-7">
+                        <!-- App promotion -->
+                        <div class="block-2 app-promotion">
+                            <a href="">
+                                <!-- Icon -->
+                                <img src="images/footer/phone-icon.png" alt="mobile-icon">
+                            </a>
+                            <p>Get the Dealsy Mobile App and Save more</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container End -->
+        </footer>*@
+    <!-- Footer Bottom -->
+    <footer class="footer-bottom">
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                    <!-- Copyright -->
+                    <div class="copyright">
+                        <p>Developed by Zubair Arif and Haris Ahsan</p>
+                    </div>
+                </div>
+                @*<div class="col-sm-6 col-12">
+                        <!-- Social Icons -->
+                        <ul class="social-media-icons text-right">
+                            <li><a class="fa fa-facebook" href=""></a></li>
+                            <li><a class="fa fa-twitter" href=""></a></li>
+                            <li><a class="fa fa-pinterest-p" href=""></a></li>
+                            <li><a class="fa fa-vimeo" href=""></a></li>
+                        </ul>
+                    </div>*@
+            </div>
+        </div>
+        <!-- Container End -->
+        <!-- To Top -->
+        <div class="top-to">
+            <a id="top" class="" href=""><i class="fa fa-angle-up"></i></a>
+        </div>
+    </footer>
+    <!-- JAVASCRIPTS -->
+    <script src="@Url.Content("~/Content/")plugins/jquery/jquery.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/tether/js/tether.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/raty/jquery.raty-fa.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/bootstrap/dist/js/popper.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/slick-carousel/slick/slick.min.js"></script>
+    @*<script src="@Url.Content("~/Content/")plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>*@
+    <script src="@Url.Content("~/Content/")plugins/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="@Url.Content("~/Content/")plugins/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script src="@Url.Content("~/Content/")js/scripts.js"></script>
+</body>
+</html>
